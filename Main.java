@@ -1,8 +1,8 @@
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 public class Main {
-    // test
     // Define the maximum temperature and cooling rate for the annealing process
     private static final double MAX_TEMPERATURE = 10000;
     private static final double COOLING_RATE = 0.03;
@@ -32,11 +32,39 @@ public class Main {
         Random random = new Random();
 
         // Start the simulated annealing process
-        // ..............
+        bestSolution = simulatedAnnealing();
+        bestValue = calculateValue(bestSolution);
 
         // Print the best solution found
         System.out.println("Best Solution: " + Arrays.toString(bestSolution));
         System.out.println("Best Value: " + bestValue);
+    }
+
+    private static boolean[] simulatedAnnealing() {
+        currentSolution = generateGreedySolution();
+    }
+
+    private static boolean[] generateGreedySolution() {
+        boolean [] greedySolution = new boolean[values.length];
+        double [] valueOverWeight = new double[values.length];
+        for(int i = 0 ; i< values.length ; i++){
+            valueOverWeight[i] = values[i]/weights[i];
+        }
+
+        Arrays.sort(valueOverWeight);
+
+        double tValue =0;
+        int weight = 0;
+
+        for(int i = valueOverWeight.length-1; i >= 0 ; i--){
+            if()
+        }
+
+
+        
+
+
+        return greedySolution;
     }
 
     // Helper method to calculate the fitness value of a solution
