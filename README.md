@@ -25,8 +25,7 @@ The Metropolis criterion compares the objective function values of the current s
 The formula for the Metropolis criterion is:
 P = e-∆ET
 
-where P is the acceptance probability, ΔE is the difference in objective function values between the current solution and the proposed new solution, T is the current temperature, and e is the exponential function. Please implement your algorithm and create your own neighbourhood function.
-Additionally, you are expected to complete a Taguchi analysis for the tuning of the 3 hyperparameters of simulated annealing, starting temperature, cooling rate, and stopping temperature. You are not expected to code Taguchi analysis and the relevant code will be given by a GitHub repository.  
+where P is the acceptance probability, ΔE is the difference in objective function values between the current solution and the proposed new solution, T is the current temperature, and e is the exponential function. Please implement your algorithm and create your own neighbourhood function.  
 Finally, compare optimality gap with the optimal solutions given.
 Code this algorithm by using the packages given. Follow the steps:
 1-Clone the given repository by using Git
@@ -35,8 +34,11 @@ Code this algorithm by using the packages given. Follow the steps:
 Your repository must include several files, which are:
 1-ReadMe.md file that explains the part that is written by you and has the answers for questions asked
 2-Exactly same files that is sent to you, if you need to add something for those files, you are expected to explain why you needed to add them and how did you implement.
+
 Question that you need to answer is:
-	How does the execution time change when problem size is increased? Report it by running the same algorithm for the given datasets.
+
+	How does the execution time change when cooling rate is increased? Report it by running the same algorithm for the given dataset.
+
 	How does the execution time and solution quality change when the difference between starting temperature and stopping temperature is increased? Report it by running the same algorithm for the given datasets.
 
 How to create Git account:

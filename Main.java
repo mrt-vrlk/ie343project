@@ -3,10 +3,11 @@ import java.util.Random;
 
 public class Main {
     // Define the maximum temperature and cooling rate for the annealing process
-    private static final double MAX_TEMPERATURE = 10000;
-    private static final double COOLING_RATE = 0.001;
+    private static double MAX_TEMPERATURE = 10000;
+    private static double[] STOP_TEMPERATURE = { 5000, 1000, 500, 250, 100, 10, 0 };
+    private static double[] COOLING_RATE = { 0.02, 0.1, 0.5, 0.9 };
+
     private static int knapsackCapacity = 300;
-    private static int NUM_ITER = 30000;
     private static int[] values = { 68, 64, 47, 55, 72, 53, 81, 60, 72, 80, 62, 42, 48, 47, 68, 51, 48, 68, 83, 55, 48,
             44, 49, 68, 63, 71, 82, 55, 60, 63, 56, 75, 42, 76, 42, 60, 75, 68, 67, 42, 71, 58, 66, 72, 67, 78, 49, 50,
             51 };
@@ -23,37 +24,92 @@ public class Main {
     public static void main(String[] args) {
 
         // Start the simulated annealing process
-        bestSolution = simulatedAnnealing();
-        bestValue = calculateValue(bestSolution);
-
-        // Print the best solution found
+        long[] timeList_temp = new long[STOP_TEMPERATURE.length];
+        int[] bestValues_temp = new int[STOP_TEMPERATURE.length];
+        for (int i = 0; i < STOP_TEMPERATURE.length; i++) {
+            double stop_temp = STOP_TEMPERATURE[i];
+            double cool_rat = COOLING_RATE[0];
+            long startTime = System.nanoTime();
+            bestSolution = simulatedAnnealing(stop_temp, cool_rat);
+            bestValue = calculateValue(bestSolution);
+            long endTime = System.nanoTime();
+            long timeElapsed = endTime - startTime;
+            timeList_temp[i] = timeElapsed;
+            bestValues_temp[i] = bestValue;
+        }
         System.out.println("Best Solution: " + Arrays.toString(bestSolution));
         System.out.println("Best Value: " + bestValue);
+
+        System.out.println(
+                "Time elapsed for each stop temperature. Temperatures are tested in descending order. Cooling rate fixed at: "
+                        + COOLING_RATE[0]);
+        for (int i = 0; i < STOP_TEMPERATURE.length; i++) {
+            System.out.println("Best Value:" + bestValues_temp[i] + " | Stop Temperature:" + STOP_TEMPERATURE[i]
+                    + " | Time elapsed:" + timeList_temp[i]);
+        }
+
+        long[] timeList_cool = new long[COOLING_RATE.length];
+        int[] bestValues_cool = new int[COOLING_RATE.length];
+        for (int i = 0; i < COOLING_RATE.length; i++) {
+            double stop_temp = STOP_TEMPERATURE[0];
+            double cool_rat = COOLING_RATE[i];
+            long startTime = System.nanoTime();
+            bestSolution = simulatedAnnealing(stop_temp, cool_rat);
+            bestValue = calculateValue(bestSolution);
+            long endTime = System.nanoTime();
+            long timeElapsed = endTime - startTime;
+            timeList_cool[i] = timeElapsed;
+            bestValues_cool[i] = bestValue;
+        }
+
+        System.out.println("Best Solution: " + Arrays.toString(bestSolution));
+        System.out.println("Best Value: " + bestValue);
+        System.out.println(
+                "Time elapsed for each cooling reate. Cooling rates are tested in ascending order. Stopping temperature fixed at: "
+                        + STOP_TEMPERATURE[0]);
+        int j = 0;
+        for (int i = 0; i < COOLING_RATE.length; i++) {
+            System.out.println("Best Value:" + bestValues_temp[i] + " | Cooling Rate:" + COOLING_RATE[i]
+                    + " | Time elapsed:" + timeList_cool[i]);
+        }
+
+        /*
+         * long startTime = System.nanoTime();
+         * bestSolution = simulatedAnnealing();
+         * bestValue = calculateValue(bestSolution);
+         * long endTime = System.nanoTime();
+         * long timeElapsed = endTime - startTime;
+         * 
+         * // Print the best solution found
+         * System.out.println("Best Solution: " + Arrays.toString(bestSolution));
+         * System.out.println("Best Value: " + bestValue);
+         * System.out.println("time elapsed:" + timeElapsed);
+         */
     }
 
-    private static boolean[] simulatedAnnealing() {
+    private static boolean[] simulatedAnnealing(double stop_temp, double cool_rat) {
 
         bestSolution = generateRandomSolution();
         double temperature = MAX_TEMPERATURE;
 
-        for (int i = 0; i < NUM_ITER; i++) {
+        while (temperature > stop_temp) {
             int bestValue = calculateValue(bestSolution);
             boolean[] currentSolution = generateNeighbour(bestSolution);
             int currentValue = calculateValue(currentSolution);
 
             if (calculateAcceptanceProbability(bestValue, currentValue, temperature) >= random.nextDouble()) {
                 bestSolution = currentSolution.clone();
-                System.out.println(Arrays.toString(bestSolution));
-                System.out.println(calculateValue(bestSolution));
             } else {
                 bestSolution = bestSolution.clone();
             }
-            temperature = temperature * COOLING_RATE;
+            temperature = temperature * cool_rat;
+            if (temperature < stop_temp) {
+                break;
+            }
         }
         return bestSolution;
     }
 
-    // generate the initial random solution in regards to constraints
     public static boolean[] generateRandomSolution() {
         boolean[] randomSolution = new boolean[values.length];
 
@@ -77,7 +133,6 @@ public class Main {
         return neighborSolution;
     }
 
-    // Helper method to calculate the fitness value of a solution
     private static int calculateValue(boolean[] solution) {
         int value = 0;
         int weight = 0;
@@ -94,7 +149,6 @@ public class Main {
         }
     }
 
-    // Helper method to calculate the acceptance probability of a neighbor solution
     private static double calculateAcceptanceProbability(int currentValue, int neighborValue, double temperature) {
         if (neighborValue > currentValue) {
             return 1;
