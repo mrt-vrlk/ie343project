@@ -6,7 +6,7 @@
 
 Code Description:
 
-After learning that we needed to create two experiments, we decided to create simulated annealing as a seperate method which took two variables. These variable were chosen as regarding the experiments we are going to conduct. They were finally chosen as the double array of stopping temperatures and double array of cooling rates.
+After learning that we needed to create two experiments, we decided to create simulated annealing as a seperate method which took two variables. These variables were chosen as regarding the experiments we are going to conduct. They were finally chosen as the double array of stopping temperatures and double array of cooling rates.
 
 In each iteration of the code:
 1-To record the time elapsed to execute we used the default System.nanoTime(). 
