@@ -14,7 +14,7 @@ In each iteration of the code:
 
 In simulatedAnnealing method, although in the first place we decided to use a set number of iterations, we decided to change our way of approach in regards to the questions, as the experiment would focus on vast range of variables, which was out of our scope. Thus we decided to use a stopping temperature as means to break the loop.
 
-The simulatedAnnealing method works with the principles of Metropolis criterion. In each iteration a new neighbour is created and valued. The Metropolis criterion then evaluates if best solution should be updated or not.
+The simulatedAnnealing method works with the principles of Metropolis criterion. In each iteration a new neighbour is created and valued. Then the Metropolis criterion evaluates the best solution, to decide if it should be updated or not.
 
 Murat Varlık & Oğuzalp Erkovan
 
